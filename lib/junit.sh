@@ -116,7 +116,7 @@ EOF
     echo '    </testcase>' >> /tmp/$$.junit
 }
 
-function junit_testcase_cdatafile()
+function junit_testcase_failure_cdatafile()
 {
     if [ "$1" == "--help" ]; then
 	cat <<EOF
@@ -153,5 +153,39 @@ EOF
         echo '            ]]>' >> /tmp/$$.junit
         echo '        </failure>' >> /tmp/$$.junit
     fi
+    echo '    </testcase>' >> /tmp/$$.junit
+}
+
+function junit_testcase_success_cdatafile()
+{
+    if [ "$1" == "--help" ]; then
+	cat <<EOF
+    junit_testcase(classname, testname, elapsed, cdata)
+
+    Generate XML to describe a junit test case.
+
+    classname : the name of the class containing the test
+    testname : the name of the test in this class
+    elapsed : Number of seconds elapsed during testing
+    failtype : A one-word description of the failure type (generally an exception name or code)
+    failmsg : A brief message (<32 chars) describing the failure
+    cdata : More detailed information about the failure.
+EOF
+	return 1
+    fi
+
+    local classname testname elapsed failtype failmsg cdata
+
+    classname="$1"
+    testname="$2"
+    elapsed=$3
+    cdata="$4"
+    SHUNIT_TESTS=$(expr $SHUNIT_TESTS + 1)
+    echo '    <testcase classname="'$classname'" time="'$elapsed'" name="'$testname'">' >> /tmp/$$.junit
+    echo '        <system-out>' >> /tmp/$$.junit
+    echo '            <![CDATA[' >> /tmp/$$.junit
+	cat "${cdata}" >> /tmp/$$.junit
+    echo '            ]]>' >> /tmp/$$.junit
+    echo '        </system-out>' >> /tmp/$$.junit
     echo '    </testcase>' >> /tmp/$$.junit
 }
