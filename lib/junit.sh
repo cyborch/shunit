@@ -174,7 +174,7 @@ EOF
 	return 1
     fi
 
-    local classname testname elapsed failtype failmsg cdata
+    local classname testname elapsed cdata
 
     classname="$1"
     testname="$2"
