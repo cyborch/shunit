@@ -73,7 +73,7 @@ EOF
     cat /tmp/$$.junit
     rm -f /tmp/$$.junit
     echo '</testsuite>'
-    return 0
+    return $SHUNIT_ERRORS + $SHUNIT_FAILURES
 }
 
 function junit_testcase()
